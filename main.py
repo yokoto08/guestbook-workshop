@@ -1,16 +1,14 @@
 from contextlib import asynccontextmanager
-
+from config import settings
+engine = create_engine(settings.database_url)
 import psycopg
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-# ⚠️ Пока всё зашито прямо в код — это и предстоит исправить.
-DATABASE_URL = "postgresql://guestbook:supersecret123@localhost:5432/guestbook"
-GREETING = "Добро пожаловать в гостевую книгу!"
 
 
 def connect():
-    return psycopg.connect(DATABASE_URL)
+    return psycopg.connect(engine )
 
 
 @asynccontextmanager
@@ -58,3 +56,5 @@ def add_message(message: Message):
             (message.author, message.text),
         )
     return {"ok": True}
+
+
