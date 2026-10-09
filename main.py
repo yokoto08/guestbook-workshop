@@ -1,14 +1,14 @@
 from contextlib import asynccontextmanager
-from config import settings
-engine = create_engine(settings.database_url)
+
 import psycopg
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from config import settings
 
 
 def connect():
-    return psycopg.connect(engine )
+    return psycopg.connect(str(settings.database_url))
 
 
 @asynccontextmanager
@@ -31,7 +31,7 @@ class Message(BaseModel):
 
 @app.get("/")
 def index():
-    return {"message": GREETING}
+    return {"message": settings.greeting}
 
 
 @app.get("/health")
@@ -56,5 +56,3 @@ def add_message(message: Message):
             (message.author, message.text),
         )
     return {"ok": True}
-
-

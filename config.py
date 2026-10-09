@@ -1,12 +1,12 @@
-# config.py
+from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    database_url: str
+    database_url: PostgresDsn
+    greeting: str = "Добро пожаловать в гостевую книгу!"
 
-    # Pydantic автоматически подтянет значения из файла .env
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 
 settings = Settings()
